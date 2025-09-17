@@ -23,10 +23,12 @@ jobs:
         run: |
           echo "acr_login from needs: '${{ needs.read_deploy.outputs.acr_login }}'"
 
-      - name: Login to Azure Container Registry using OIDC
-        uses: azure/docker-login@v1
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v2
         with:
-          login-server: ${{ needs.read_deploy.outputs.acr_login }}
+          registry: ${{ needs.read_deploy.outputs.acr_login }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push image
         uses: docker/build-push-action@v5
