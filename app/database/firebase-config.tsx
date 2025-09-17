@@ -6,14 +6,13 @@ import { getFirestore } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// Para projeto de escola - use configuração de demonstração
 const firebaseConfig = {
-  apiKey: "demo-api-key",
-  authDomain: "vet-cloud-demo.firebaseapp.com",
-  projectId: "vet-cloud-demo",
-  storageBucket: "vet-cloud-demo.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:demo-app-id"
+  apiKey: "AIzaSyBT03jffmGS1d4h4f49y3w2_wHnOr89xfM",
+  authDomain: "vet-cloud-b2f28.firebaseapp.com",
+  projectId: "vet-cloud-b2f28",
+  storageBucket: "vet-cloud-b2f28.firebasestorage.app",
+  messagingSenderId: "350545415442",
+  appId: "1:350545415442:web:e69d271405a1b8acc6f7cb"
 };
 
 // Initialize Firebase

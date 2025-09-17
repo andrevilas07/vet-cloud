@@ -45,16 +45,24 @@ const AuthProvider = ({ children }: any) => {
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (usuario) => {
-            setUsuario(usuario ?? undefined);
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000)
-        });
+        // Tratamento de erro para Firebase demo
+        try {
+            const unsubscribe = onAuthStateChanged(auth, (usuario) => {
+                setUsuario(usuario ?? undefined);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000)
+            });
 
-        return () => {
-            unsubscribe();
-        };
+            return () => {
+                unsubscribe();
+            };
+        } catch (error) {
+            console.warn("Firebase não configurado corretamente, usando modo demo:", error);
+            // Simula um usuário não logado em modo demo
+            setUsuario(undefined);
+            setLoading(false);
+        }
     }, []);
 
     const value = {
