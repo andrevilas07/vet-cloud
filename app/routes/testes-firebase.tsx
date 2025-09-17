@@ -40,7 +40,7 @@ import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluir
 //const usuario_por_email = await obterIdUsuarioPorEmail("paulosrahal@gmail.com");
 //const agendamento = await obterAgendamento("2lzHQxVAYJOeO53mzo4m", "xDAIZxF4kZhnNY9yCajl");
 //const agendamentos = await obterAgendamentos("2lzHQxVAYJOeO53mzo4m");
-const agendamento_por = await obterAgendamentosPor("2lzHQxVAYJOeO53mzo4m", "", "usuario");
+//const agendamento_por = await obterAgendamentosPor("2lzHQxVAYJOeO53mzo4m", "", "usuario");
 
 export default function TestesFirebase() {
     return (
@@ -259,7 +259,8 @@ export default function TestesFirebase() {
             console.log(agendamentos);           
         }}>Obter Agendamento</Button>*/
 
-        <Button onClick={() => {
+        <Button onClick={async () => {
+            const agendamento_por = await obterAgendamentosPor("2lzHQxVAYJOeO53mzo4m", "", "id_usuario");
             console.log(agendamento_por);           
         }}>Obter Agendamento Por Filtro</Button>
     )
