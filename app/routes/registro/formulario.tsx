@@ -37,8 +37,8 @@ export function Formulario({
                                 <Input id="full-name" type="text" required />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="full-name">CPF</Label>
-                                <Input id="full-name" type="text" required maxLength={11} />
+                                <Label htmlFor="cpf">CPF</Label>
+                                <Input id="cpf" type="text" required maxLength={11} />
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="email-contato">E-mail</Label>
@@ -73,7 +73,7 @@ export function Formulario({
                             <div className="flex flex-col gap-3">
                                 <Button type="button" className="w-full" onClick={() => {
                                     criarUsuario(formulario as Autenticacao).then(() => {
-                                        navigate('/dash', {
+                                        navigate('/home', {
                                             replace: true,
                                         })
                                     })
