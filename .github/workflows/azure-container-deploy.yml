@@ -43,8 +43,16 @@ jobs:
     outputs:
       deploy: ${{ steps.read.outputs.json }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Read deploy info
         id: read
         run: |
+          # Ensure the file exists and fail early with a helpful message
+          if [ ! -f .deploy_info.json ]; then
+            echo "::error file=.deploy_info.json::.deploy_info.json not found in repository. Make sure the file is committed to the branch triggering this workflow." 
+            exit 1
+          fi
           # Use the recommended $GITHUB_OUTPUT to set step outputs
           echo "json=$(cat .deploy_info.json)" >> $GITHUB_OUTPUT
