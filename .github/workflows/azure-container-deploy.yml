@@ -19,7 +19,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-buildx-action@v2
 
-      - name: Debug: print acr login
+      - name: 'Debug: print acr login'
         run: |
           echo "acr_login from needs: '${{ needs.read_deploy.outputs.acr_login }}'"
 
