@@ -1,0 +1,50 @@
+name: Build and deploy to Azure Web App (Container)
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    needs: read_deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Azure Container Registry using OIDC
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
+
+      - name: Deploy to Azure Web App (Container)
+        uses: azure/webapps-deploy@v4
+        with:
+          app-name: ${{ fromJson(needs.read_deploy.outputs.deploy).appName }}
+          images: ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
+
+  read_deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.read.outputs.json }}
+    steps:
+      - name: Read deploy info
+        id: read
+        run: |
+          # Use the recommended $GITHUB_OUTPUT to set step outputs
+          echo "json=$(cat .deploy_info.json)" >> $GITHUB_OUTPUT

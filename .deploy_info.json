@@ -1,0 +1,9 @@
+﻿{
+    "acrLogin":  "vetcloudacr2513.azurecr.io",
+    "appName":  "vet-cloud-prod",
+    "plan":  "plan-vet-cloud-prod",
+    "resourceGroup":  "rg-vet-cloud-prod",
+    "acrName":  "vetcloudacr2513",
+    "appInsights":  "vet-cloud-ai",
+    "location":  "eastus"
+}
