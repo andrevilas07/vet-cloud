@@ -55,4 +55,7 @@ jobs:
             exit 1
           fi
           # Use the recommended $GITHUB_OUTPUT to set step outputs
-          echo "json=$(cat .deploy_info.json)" >> $GITHUB_OUTPUT
+          # Use EOF multi-line format to safely pass JSON (avoid newlines breaking the output file format)
+          echo "json<<EOF" >> $GITHUB_OUTPUT
+          cat .deploy_info.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
