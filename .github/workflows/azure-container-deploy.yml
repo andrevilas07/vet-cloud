@@ -33,7 +33,7 @@ jobs:
             ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
 
       - name: Deploy to Azure Web App (Container)
-        uses: azure/webapps-deploy@v4
+        uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ fromJson(needs.read_deploy.outputs.deploy).appName }}
           images: ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
