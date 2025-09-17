@@ -19,10 +19,14 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-buildx-action@v2
 
+      - name: Debug: print acr login
+        run: |
+          echo "acr_login from needs: '${{ needs.read_deploy.outputs.acr_login }}'"
+
       - name: Login to Azure Container Registry using OIDC
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}
+          login-server: ${{ needs.read_deploy.outputs.acr_login }}
 
       - name: Build and push image
         uses: docker/build-push-action@v5
@@ -30,18 +34,19 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
+            ${{ needs.read_deploy.outputs.acr_login }}/vet-cloud:latest
 
       - name: Deploy to Azure Web App (Container)
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ fromJson(needs.read_deploy.outputs.deploy).appName }}
-          images: ${{ fromJson(needs.read_deploy.outputs.deploy).acrLogin }}/vet-cloud:latest
+          images: ${{ needs.read_deploy.outputs.acr_login }}/vet-cloud:latest
 
   read_deploy:
     runs-on: ubuntu-latest
     outputs:
       deploy: ${{ steps.read.outputs.json }}
+      acr_login: ${{ steps.read.outputs.acr_login }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -59,3 +64,6 @@ jobs:
           echo "json<<EOF" >> $GITHUB_OUTPUT
           cat .deploy_info.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          # Also output a single-line value for acrLogin to avoid passing JSON blobs into action inputs
+          ACR_LOGIN=$(jq -r '.acrLogin' .deploy_info.json)
+          echo "acr_login=$ACR_LOGIN" >> $GITHUB_OUTPUT
